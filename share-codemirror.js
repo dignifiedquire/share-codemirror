@@ -6,13 +6,15 @@
 
     var suppress = false;
     cm.setValue(ctx.get());
+    cm.clearHistory();
+
     check();
 
     // *** remote -> local changes
 
     ctx.onInsert = function (pos, text) {
       suppress = true;
-      cm.replaceRange(text, cm.posFromIndex(pos));
+      cm.replaceRange(text, cm.posFromIndex(pos), undefined, 'noundo');
       suppress = false;
       check();
     };
@@ -21,7 +23,7 @@
       suppress = true;
       var from = cm.posFromIndex(pos);
       var to = cm.posFromIndex(pos + length);
-      cm.replaceRange('', from, to);
+      cm.replaceRange('', from, to, 'noundo');
       suppress = false;
       check();
     };
